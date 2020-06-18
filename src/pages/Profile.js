@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Table, Button } from 'reactstrap'
+import { Table, Button } from 'reactstrap'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -32,22 +32,24 @@ export default class Profile extends Component {
             <div>
               <h5>Your Profile</h5>
               <Table bordered>
-                <tr>
-                  <th>Name</th>
-                  <td>{this.state.name}</td>
-                </tr>
-                <tr>
-                  <th>Username</th>
-                  <td>{this.state.username}</td>
-                </tr>
-                <tr>
-                  <th>Email</th>
-                  <td>{this.state.email}</td>
-                </tr>
-                <tr>
-                  <th>Phone</th>
-                  <td>{this.state.phone}</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <th>Name</th>
+                    <td>{this.state.name}</td>
+                  </tr>
+                  <tr>
+                    <th>Username</th>
+                    <td>{this.state.username}</td>
+                  </tr>
+                  <tr>
+                    <th>Email</th>
+                    <td>{this.state.email}</td>
+                  </tr>
+                  <tr>
+                    <th>Phone</th>
+                    <td>{this.state.phone}</td>
+                  </tr>
+                </tbody>
               </Table>
             </div>
             <div>
