@@ -107,10 +107,10 @@ export default class Profile extends Component {
             <ModalHeader>Modal title</ModalHeader>
             <ModalBody>
               <Form>
-                <Input name='name' value={this.state.name} onChange={this.handlerChange}/>
-                <Input name='email' value={this.state.email} onChange={this.handlerChange}/>
-                <Input name='phone' value={this.state.phone} onChange={this.handlerChange}/>
-                <Input name='address' value={this.state.address} onChange={this.handlerChange}/>
+                <Input className='mt-2' name='name' value={this.state.name} onChange={this.handlerChange}/>
+                <Input className='mt-2' name='email' value={this.state.email} onChange={this.handlerChange}/>
+                <Input className='mt-2' name='phone' value={this.state.phone} onChange={this.handlerChange}/>
+                <Input className='mt-2' name='address' value={this.state.address} onChange={this.handlerChange}/>
               </Form>
             </ModalBody>
             <ModalFooter>
