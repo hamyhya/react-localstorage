@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Form, Input, Button } from 'reactstrap'
-import { Link } from 'react-router-dom'
+import swal from 'sweetalert2'
 
 export default class Register extends Component {
   constructor(props) {
@@ -13,10 +13,63 @@ export default class Register extends Component {
       address: '',
       password: ''
     }
+    this.registerStore = this.registerStore.bind(this)
   }
 	handlerChange = (e) =>{
 		this.setState({[e.target.name]: e.target.value})
-	}
+  }
+  registerStore() {
+    const { name, username, email, phone, address, password } = this.state
+    // [{
+    //   name: this.state.name,
+    //   username: this.state.username,
+    //   email: this.state.email,
+    //   phone: this.state.phone,
+    //   address: this.state.address,
+    //   password: this.state.password
+    // }]
+    if (!((this.state.name === '') || (this.state.username === '') || (this.state.password === ''))) {
+      if ((this.state.password.match(/^(?=.*[0-9a-zA-Z][!@#$%^&*])[0-9a-zA-Z!@#$%^&*]/))  && this.state.password.length > 8) {
+        if (JSON.parse(localStorage.getItem('userData'))) {
+          let initialData = [JSON.parse(localStorage.getItem('userData'))]
+          initialData.push({
+            name, username, email, phone, address, password  
+          })
+          localStorage.setItem('userData', initialData)
+        } else {
+          localStorage.setItem('userData', JSON.stringify({
+            name, username, email, phone, address, password  
+          }))
+        }
+        this.props.history.push(`/login`)
+      } else {
+        swal.fire({
+          icon: 'error',
+          title: 'Ouch!',
+          text: 'Password must contain char, number and > 8 length!'
+        })  
+      }
+    } else {
+      swal.fire({
+        icon: 'error',
+        title: 'Ouch!',
+        text: 'Please fill the form'
+      })
+    }
+  }
+  checkAuth() {
+    if (JSON.parse(localStorage.getItem('auth'))) {
+      this.props.history.goBack()
+      swal.fire({
+        icon: 'warning',
+        title: 'Wait!',
+        text: 'Please logout first'
+      })
+    }
+  }
+  componentDidMount() {
+    this.checkAuth()
+  }
   render() {
     return(
       <>
@@ -34,7 +87,7 @@ export default class Register extends Component {
                   <Input className='mt-1' type='text' name='phone' onChange={this.handlerChange} placeholder='Phone Number' />
                   <Input className='mt-1' type='text' name='address' onChange={this.handlerChange} placeholder='Address' />
                   <Input className='mt-1' type='password' name='password' onChange={this.handlerChange} placeholder='Password' />
-                  <Link to={{
+                  {/* <Link to={{
                     pathname: `/welcome/${this.state.username}`,
                     state: {
                       name: `${this.state.name}`,
@@ -44,9 +97,9 @@ export default class Register extends Component {
                       address: `${this.state.address}`,
                       password: `${this.state.password}`
                     }
-                  }}>
-                    <Button className='btn btn-register mt-2'>Register</Button>
-                  </Link>
+                  }}> */}
+                    <Button className='btn btn-register mt-2' onClick={this.registerStore}>Register</Button>
+                  {/* </Link> */}
                 </Form>
               </Col>
             </Row>

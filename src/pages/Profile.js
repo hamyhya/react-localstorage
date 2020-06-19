@@ -1,18 +1,43 @@
 import React, { Component } from 'react'
 import { Table, Button } from 'reactstrap'
+import swal from 'sweetalert2'
 
 export default class Profile extends Component {
   constructor(props) {
     super(props)
+    const data = JSON.parse(localStorage.getItem('userData'))
     this.state = {
-      username: props.match.params.username,
-      name: props.location.state.name,
-      email: props.location.state.email,
-      phone: props.location.state.phone,
-      address: props.location.state.address,
-      password: props.location.state.password,
+      username: data.username,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+      password: data.password,
       image: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/160528_U%ED%81%B4%EB%A6%B0%EC%BD%98%EC%84%9C%ED%8A%B8_%EC%8B%9C%ED%81%AC%EB%A6%BF_%EC%86%A1%EC%A7%80%EC%9D%80_%281%29.jpg'
     }
+    this.logoutAuth = this.logoutAuth.bind(this)
+    this.goHome = this.goHome.bind(this)
+  }
+  logoutAuth() {
+    localStorage.removeItem('userData')
+    localStorage.removeItem('auth')
+    this.props.history.push('/')
+  }
+  goHome() {
+    this.props.history.push(`/welcome/${this.state.username}`)
+  }
+  checkAuth() {
+    if (!JSON.parse(localStorage.getItem('auth'))) {
+      this.props.history.goBack()
+      swal.fire({
+        icon: 'warning',
+        title: 'Wait!',
+        text: 'Please login first'
+      })
+    }
+  }
+  componentDidMount() {
+    this.checkAuth()
   }
   render() {
     return(
@@ -53,8 +78,9 @@ export default class Profile extends Component {
               </Table>
             </div>
             <div>
-              <Button className='btn btn-register' 
-              onClick={() => this.props.history.push('/')}>Logout</Button>
+              <Button className='btn btn-register' onClick={this.goHome}>Home</Button>
+              <Button className='btn btn-edit' onClick={this.goHome}>Edit Profile</Button>
+              <Button className='btn btn-logout mt-2' onClick={this.logoutAuth}>Logout</Button>
             </div>
           </div>
         </div>
