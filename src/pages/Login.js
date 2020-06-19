@@ -15,12 +15,12 @@ export default class Login extends Component {
 		this.setState({[e.target.name]: e.target.value})
   }
   loginAuth() {
-    const data = JSON.parse(localStorage.getItem('userData'))
     const username = this.state.username
     const password = this.state.password
+    const data = JSON.parse(localStorage.getItem(username))
     if (username === data.username && password === data.password) {
       const auth = localStorage.setItem('auth', true)
-      this.props.history.push(`/profile/${this.state.username}`)
+      this.props.history.push(`/welcome/${username}`)
     } else {
       swal.fire({
         icon: 'error',

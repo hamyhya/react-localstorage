@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Table, Button } from 'reactstrap'
+import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Input } from 'reactstrap'
 import swal from 'sweetalert2'
 
 export default class Profile extends Component {
   constructor(props) {
     super(props)
-    const data = JSON.parse(localStorage.getItem('userData'))
+    const data = JSON.parse(localStorage.getItem(props.match.params.username))
     this.state = {
+      showModal: false,
       username: data.username,
       name: data.name,
       email: data.email,
@@ -18,10 +19,16 @@ export default class Profile extends Component {
     this.logoutAuth = this.logoutAuth.bind(this)
     this.goHome = this.goHome.bind(this)
   }
+  handlerChange = (e) => {
+    this.setState({[e.target.name]: e.target.value})
+  }
   logoutAuth() {
-    localStorage.removeItem('userData')
     localStorage.removeItem('auth')
     this.props.history.push('/')
+  }
+  toggleModal = (e) => {
+    e.preventDefault()
+    this.setState({showModal: !this.state.showModal})
   }
   goHome() {
     this.props.history.push(`/welcome/${this.state.username}`)
@@ -35,6 +42,17 @@ export default class Profile extends Component {
         text: 'Please login first'
       })
     }
+  }
+  editProfile = (e) => {
+    const data = {
+      name: this.state.name,
+      username: this.state.username,
+      email: this.state.email,
+      phone: this.state.phone,
+      address: this.state.address
+    }
+    localStorage.setItem(this.state.username, JSON.stringify(data))
+    this.setState({showModal: !this.state.showModal})
   }
   componentDidMount() {
     this.checkAuth()
@@ -79,10 +97,27 @@ export default class Profile extends Component {
             </div>
             <div>
               <Button className='btn btn-register' onClick={this.goHome}>Home</Button>
-              <Button className='btn btn-edit' onClick={this.goHome}>Edit Profile</Button>
+              <Button className='btn btn-edit mt-2' onClick={this.toggleModal}>Edit Profile</Button>
               <Button className='btn btn-logout mt-2' onClick={this.logoutAuth}>Logout</Button>
             </div>
           </div>
+          
+          {/* MODAL */}
+          <Modal isOpen={this.state.showModal}>
+            <ModalHeader>Modal title</ModalHeader>
+            <ModalBody>
+              <Form>
+                <Input name='name' value={this.state.name} onChange={this.handlerChange}/>
+                <Input name='email' value={this.state.email} onChange={this.handlerChange}/>
+                <Input name='phone' value={this.state.phone} onChange={this.handlerChange}/>
+                <Input name='address' value={this.state.address} onChange={this.handlerChange}/>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="warning" onClick={this.editProfile}>Edit</Button>
+              <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
         </div>
       </>
     )

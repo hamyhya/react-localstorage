@@ -30,18 +30,16 @@ export default class Register extends Component {
     // }]
     if (!((this.state.name === '') || (this.state.username === '') || (this.state.password === ''))) {
       if ((this.state.password.match(/^(?=.*[0-9a-zA-Z][!@#$%^&*])[0-9a-zA-Z!@#$%^&*]/))  && this.state.password.length > 8) {
-        if (JSON.parse(localStorage.getItem('userData'))) {
-          let initialData = [JSON.parse(localStorage.getItem('userData'))]
-          initialData.push({
-            name, username, email, phone, address, password  
-          })
-          localStorage.setItem('userData', initialData)
-        } else {
-          localStorage.setItem('userData', JSON.stringify({
-            name, username, email, phone, address, password  
-          }))
-        }
-        this.props.history.push(`/login`)
+          if(JSON.parse(localStorage.getItem(this.state.username))) {
+            swal.fire({
+              icon: 'error',
+              title: 'Ouch!',
+              text: 'Username has been taken!'
+            })
+          } else {
+            localStorage.setItem(this.state.username, JSON.stringify({name, username, email, phone, address, password}))
+            this.props.history.push('/login')
+          }
       } else {
         swal.fire({
           icon: 'error',

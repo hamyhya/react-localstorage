@@ -5,11 +5,12 @@ import swal from 'sweetalert2'
 export default class Home extends Component {
   constructor(props) {
     super(props)
-    const userData = JSON.parse(localStorage.getItem('userData'))
+    const userData = JSON.parse(localStorage.getItem(props.match.params.username))
     this.state = {
       name: userData.name,
       username: userData.username
     }
+    console.log(this.state.username)
     this.goProfile = this.goProfile.bind(this)
     this.logoutAuth = this.logoutAuth.bind(this)
   }
@@ -27,7 +28,6 @@ export default class Home extends Component {
     this.props.history.push(`/profile/${this.state.username}`)
   }
   logoutAuth() {
-    localStorage.removeItem('userData')
     localStorage.removeItem('auth')
     this.props.history.push('/')
   }
