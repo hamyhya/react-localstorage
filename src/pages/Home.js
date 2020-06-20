@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Input, Button } from 'reactstrap'
+import { Row, Col, Button } from 'reactstrap'
 import swal from 'sweetalert2'
 
 export default class Home extends Component {
@@ -10,17 +10,18 @@ export default class Home extends Component {
       name: userData.name,
       username: userData.username
     }
-    console.log(this.state.username)
+    this.checkAuth = this.checkAuth.bind(this)
     this.goProfile = this.goProfile.bind(this)
     this.logoutAuth = this.logoutAuth.bind(this)
   }
   checkAuth() {
-    if (!JSON.parse(localStorage.getItem('auth'))) {
+    const auth = JSON.parse(localStorage.getItem('auth'))
+    if (!(auth && auth === this.state.username)) {
       this.props.history.goBack()
       swal.fire({
         icon: 'warning',
         title: 'Wait!',
-        text: 'Please login first'
+        text: 'Please logout first!'
       })
     }
   }

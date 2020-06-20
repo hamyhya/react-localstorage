@@ -85,19 +85,8 @@ export default class Register extends Component {
                   <Input className='mt-1' type='text' name='phone' onChange={this.handlerChange} placeholder='Phone Number' />
                   <Input className='mt-1' type='text' name='address' onChange={this.handlerChange} placeholder='Address' />
                   <Input className='mt-1' type='password' name='password' onChange={this.handlerChange} placeholder='Password' />
-                  {/* <Link to={{
-                    pathname: `/welcome/${this.state.username}`,
-                    state: {
-                      name: `${this.state.name}`,
-                      username: `${this.state.username}`,
-                      email: `${this.state.email}`,
-                      phone: `${this.state.phone}`,
-                      address: `${this.state.address}`,
-                      password: `${this.state.password}`
-                    }
-                  }}> */}
                     <Button className='btn btn-register mt-2' onClick={this.registerStore}>Register</Button>
-                  {/* </Link> */}
+                    <Button className='btn btn-register mt-2' onClick={() => this.props.history.push('/login')}>Login</Button>
                 </Form>
               </Col>
             </Row>

@@ -17,18 +17,34 @@ export default class Login extends Component {
   loginAuth() {
     const username = this.state.username
     const password = this.state.password
-    const data = JSON.parse(localStorage.getItem(username))
-    if (username === data.username && password === data.password) {
-      const auth = localStorage.setItem('auth', true)
-      this.props.history.push(`/welcome/${username}`)
-    } else {
+    if (username === '' && password === '') {
       swal.fire({
         icon: 'error',
         title: 'Oops!',
-        text: 'Incorrect data!'
+        text: 'Please fill the form!'
       })
+    } else {
+      if (JSON.parse(localStorage.getItem(username))) {
+        const data = JSON.parse(localStorage.getItem(username))
+        if (username === data.username && password === data.password) {
+          localStorage.setItem('auth', JSON.stringify(username))
+          this.props.history.push(`/welcome/${username}`)
+        } else {
+          swal.fire({
+            icon: 'error',
+            title: 'Oops!',
+            text: 'Incorrect data!'
+          })
+        }
+      } else {
+        swal.fire({
+          icon: 'error',
+          title: 'Oops!',
+          text: 'User not registered!'
+        })
+      }
     }
-  }
+    }
   checkAuth() {
     if (JSON.parse(localStorage.getItem('auth'))) {
       swal.fire({

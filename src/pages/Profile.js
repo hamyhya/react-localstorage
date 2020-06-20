@@ -18,6 +18,7 @@ export default class Profile extends Component {
     }
     this.logoutAuth = this.logoutAuth.bind(this)
     this.goHome = this.goHome.bind(this)
+    this.checkAuth = this.checkAuth.bind(this)
   }
   handlerChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
@@ -34,12 +35,13 @@ export default class Profile extends Component {
     this.props.history.push(`/welcome/${this.state.username}`)
   }
   checkAuth() {
-    if (!JSON.parse(localStorage.getItem('auth'))) {
+    const auth = JSON.parse(localStorage.getItem('auth'))
+    if (!(auth && auth === this.state.username)) {
       this.props.history.goBack()
       swal.fire({
         icon: 'warning',
         title: 'Wait!',
-        text: 'Please login first'
+        text: 'Please logout first!'
       })
     }
   }
@@ -49,7 +51,8 @@ export default class Profile extends Component {
       username: this.state.username,
       email: this.state.email,
       phone: this.state.phone,
-      address: this.state.address
+      address: this.state.address,
+      password: this.state.password
     }
     localStorage.setItem(this.state.username, JSON.stringify(data))
     this.setState({showModal: !this.state.showModal})
